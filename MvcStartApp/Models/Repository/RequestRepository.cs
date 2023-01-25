@@ -25,5 +25,10 @@ namespace MvcStartApp.Models.Repository
             // Сохранение изменений в БД
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Request[]> GetRequests()
+        {
+            return await _context.Requests.ToArrayAsync();
+        }
     }
 }

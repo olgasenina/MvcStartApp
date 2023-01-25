@@ -15,6 +15,7 @@ namespace MvcStartApp.Controllers
     {
         // ссылка на репозиторий
         private readonly IBlogRepository _repo;
+        private readonly IRequestRepository _repoRequest;
         private readonly ILogger<HomeController> _logger;
 
         public HomeController(ILogger<HomeController> logger, IBlogRepository repo)
