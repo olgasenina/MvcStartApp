@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using MvcStartApp.Middlewares;
 using MvcStartApp.Models;
 using MvcStartApp.Models.DB;
+using MvcStartApp.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +29,11 @@ namespace MvcStartApp
         public void ConfigureServices(IServiceCollection services)
         {
             string connection = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection));
+            services.AddDbContext<BlogContext>(options => options.UseSqlServer(connection), ServiceLifetime.Singleton);
 
             // регистрация сервиса репозитория для взаимодействия с базой данных
             services.AddSingleton<IBlogRepository, BlogRepository>();
+            services.AddSingleton<IRequestRepository, RequestRepository>(); // репозиторий логов
 
             services.AddControllersWithViews();
         }
@@ -64,6 +66,13 @@ namespace MvcStartApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+            });
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Request}/{id?}");
             });
         }
     }

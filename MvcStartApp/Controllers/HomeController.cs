@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using MvcStartApp.Models;
 using MvcStartApp.Models.DB;
+using MvcStartApp.Models.Repository;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,6 +52,16 @@ namespace MvcStartApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        /// <summary>
+        /// Вывести на страничку список всех авторов (то есть всех пользователей). 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> Authors()
+        {
+            var authors = await _repo.GetUsers();
+            return View(authors);
         }
     }
 }
